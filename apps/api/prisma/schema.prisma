@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounting_entries {
+  id             Int       @id @default(autoincrement())
+  user_id        Int
+  transaction_id Int
+  side_id        Int
+  item_id        Int
+  amount         Int
+  created_at     DateTime? @db.Timestamp(6)
+  updated_at     DateTime? @db.Timestamp(6)
+
+  @@index([item_id], map: "index_accounting_entries_on_item_id")
+  @@index([side_id], map: "index_accounting_entries_on_side_id")
+  @@index([transaction_id], map: "index_accounting_entries_on_transaction_id")
+  @@index([user_id], map: "index_accounting_entries_on_user_id")
+  @@index([user_id, item_id, side_id], map: "index_accounting_entries_on_user_id_and_item_id_and_side_id")
+}
+
+model accounting_items {
+  id          Int       @id @default(autoincrement())
+  user_id     Int
+  name        String    @db.VarChar(255)
+  type_id     Int
+  description String    @db.VarChar(255)
+  created_at  DateTime? @db.Timestamp(6)
+  updated_at  DateTime? @db.Timestamp(6)
+  selectable  Boolean   @default(true)
+
+  @@index([type_id], map: "index_accounting_items_on_type_id")
+  @@index([user_id], map: "index_accounting_items_on_user_id")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model accounting_sides {
+  id         Int?
+  name       String    @db.VarChar(255)
+  deleted_at DateTime? @db.Timestamp(6)
+  created_at DateTime? @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+
+  @@ignore
+}
+
+model accounting_transactions {
+  id          Int       @id @default(autoincrement())
+  user_id     Int
+  date        DateTime  @db.Timestamp(6)
+  description String?   @db.VarChar(255)
+  created_at  DateTime? @db.Timestamp(6)
+  updated_at  DateTime? @db.Timestamp(6)
+
+  @@index([date], map: "index_accounting_transactions_on_date")
+  @@index([user_id], map: "index_accounting_transactions_on_user_id")
+}
+
+model accounting_types {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(255)
+  side_id    Int
+  deleted_at DateTime? @db.Timestamp(6)
+  created_at DateTime? @db.Timestamp(6)
+  updated_at DateTime? @db.Timestamp(6)
+
+  @@index([side_id], map: "index_accounting_types_on_side_id")
+}
+
+model inventory_settings {
+  user_id        Int       @id
+  debit_item_id  Int
+  credit_item_id Int
+  created_at     DateTime? @db.Timestamp(6)
+  updated_at     DateTime? @db.Timestamp(6)
+}
+
+model schema_migrations {
+  version String @unique(map: "unique_schema_migrations") @db.VarChar(255)
+}
+
+model users {
+  id           Int       @id @default(autoincrement())
+  provider     String    @db.VarChar(255)
+  uid          String    @db.VarChar(255)
+  name         String?   @db.VarChar(255)
+  image_url    String?   @db.VarChar(255)
+  email        String?   @db.VarChar(255)
+  access_token String?   @db.VarChar(255)
+  created_at   DateTime? @db.Timestamp(6)
+  updated_at   DateTime? @db.Timestamp(6)
+}

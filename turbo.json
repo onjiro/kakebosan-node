@@ -2,7 +2,16 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build",
+        "$DATABASE_URL",
+        "$GITHUB_CLIENT_ID",
+        "$GITHUB_CLIENT_SECRET",
+        "$GITHUB_REDIRECT_PATH",
+        "$GITHUB_CALLBACK_URL",
+        "$SESSION_SECRET",
+        "$SESSION_COOKIE_SECURE"
+      ],
       "outputs": ["dist/**", ".next/**"]
     },
     "lint": {

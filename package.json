@@ -13,6 +13,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@types/underscore": "^1.11.4",
     "eslint-config-custom": "*",
     "prettier": "latest",
     "turbo": "latest"
@@ -20,6 +21,8 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "underscore": "^1.13.6"
+  },
   "packageManager": "npm@8.1.2"
 }

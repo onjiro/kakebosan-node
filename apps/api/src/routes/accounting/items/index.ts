@@ -1,14 +1,15 @@
-import { FastifyPluginAsync } from "fastify"
+import { FastifyPluginAsync } from "fastify";
+import { authenticated } from "../../../hooks";
 
 const items: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-  fastify.get('/', async function (request, reply) {
-    if (!request.session.user_id) {
-      return reply.status(403).send();
-    }
+  fastify.get('/', {
+    preValidation: authenticated,
+    handler: async (request, reply) => {
+      const userId = request.session.user_id;
 
-    const userId = request.session.user_id;
-    return await fastify.prisma.accounting_items.findMany({ where: { user_id: userId } });
-  })
+      return await fastify.prisma.accounting_items.findMany({ where: { user_id: userId } });
+    }
+  });
 }
 
 export default items;

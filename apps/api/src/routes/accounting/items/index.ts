@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
-import { authenticated } from "../../../hooks";
+import { authenticated } from "@hooks/index";
 
 const items: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get('/', {

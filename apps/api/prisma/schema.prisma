@@ -28,19 +28,19 @@ model accounting_entries {
 }
 
 model accounting_items {
-  id            Int                  @id @default(autoincrement())
-  user          users                @relation(fields: [user_id], references: [id])
-  user_id       Int
-  name          String               @db.VarChar(255)
-  type          accounting_types     @relation(fields: [type_id], references: [id])
-  type_id       Int
-  description   String               @db.VarChar(255)
-  created_at    DateTime             @default(now()) @db.Timestamp(6)
-  updated_at    DateTime             @updatedAt @db.Timestamp(6)
-  selectable    Boolean              @default(true)
-  entries       accounting_entries[]
-  debitSetting  inventory_settings?  @relation("debitItem")
-  creditSetting inventory_settings?  @relation("creditItem")
+  id                       Int                  @id @default(autoincrement())
+  user                     users                @relation(fields: [user_id], references: [id])
+  user_id                  Int
+  name                     String               @db.VarChar(255)
+  type                     accounting_types     @relation(fields: [type_id], references: [id])
+  type_id                  Int
+  description              String               @db.VarChar(255)
+  created_at               DateTime             @default(now()) @db.Timestamp(6)
+  updated_at               DateTime             @updatedAt @db.Timestamp(6)
+  selectable               Boolean              @default(true)
+  entries                  accounting_entries[]
+  settingUsingAsDebitItem  inventory_settings?  @relation("debitItem")
+  settingUsingAsCreditItem inventory_settings?  @relation("creditItem")
 
   @@index([type_id], map: "index_accounting_items_on_type_id")
   @@index([user_id], map: "index_accounting_items_on_user_id")

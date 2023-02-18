@@ -45,6 +45,6 @@
     "typescript": "^4.5.4"
   },
   "prisma": {
-    "seed": "swc -qs false prisma/seed.ts | node -"
+    "seed": "ts-node prisma/seed.ts"
   }
 }

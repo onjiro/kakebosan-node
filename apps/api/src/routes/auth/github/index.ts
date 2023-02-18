@@ -1,4 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
+// @ts-ignore
 import pick from "underscore/modules/pick.js";
 import * as users from "@gateways/users";
 import * as github from "@gateways/github";
@@ -16,7 +17,7 @@ const githubCallback: FastifyPluginAsync = async (fastify, opts): Promise<void> 
     fastify.log.info(pick(githubUser.data, "id", "login", "name"), "github user:");
 
     const uid = githubUser.data.id.toString();
-    const name = githubUser.data.name;
+    const name = githubUser.data.name || "";
 
     // github user to app user
     const user = await users.findByGitHubId(fastify.prisma, uid)

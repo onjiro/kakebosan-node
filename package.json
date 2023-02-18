@@ -16,6 +16,7 @@
     "@types/underscore": "^1.11.4",
     "eslint-config-custom": "*",
     "prettier": "latest",
+    "ts-node": "^10.9.1",
     "turbo": "latest"
   },
   "engines": {

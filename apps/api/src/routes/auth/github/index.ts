@@ -1,40 +1,30 @@
 import { FastifyPluginAsync } from "fastify";
-import { Octokit } from "@octokit/rest";
 import pick from "underscore/modules/pick.js";
+import * as users from "@gateways/users";
+import * as github from "@gateways/github";
 
 const githubCallback: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
 
   void fastify.get('/callback', async function (request, reply) {
+    // request to token
     const { token } = await fastify.githubOAuth2.getAccessTokenFromAuthorizationCodeFlow(request);
     fastify.log.info("access_token acquired.");
 
-    const octokit = new Octokit({ auth: token.access_token });
-    const githubUser = await octokit.rest.users.getAuthenticated();
+    // token to github user
+    const githubUser = await github.getAuthenticatedUser(token.access_token);
     fastify.log.info(pick(githubUser.data, "id", "login", "name"), "github user:");
 
-    const provider = "github"
     const uid = githubUser.data.id.toString();
     const name = githubUser.data.name;
 
-    const user = await fastify.prisma.users.findFirst({
-      where: { provider, uid },
-      select: { id: true }
-    });
+    // github user to app user
+    const user = await users.findByGitHubId(fastify.prisma, uid)
+      || await users.createWithGitHubId(fastify.prisma, uid, name);
 
-    if (user) {
-      fastify.log.info(user, "users.id:");
-      request.session.user_id = user.id;
-
-    } else {
-      fastify.log.info("user not found.");
-      const createdUser = await fastify.prisma.users.create({
-        data: { provider, uid, name },
-        select: { id: true }
-      });
-      fastify.log.info(createdUser, "user created. id:");
-      request.session.user_id = createdUser.id;
-    }
+    // set user_id to session
+    fastify.log.info(user, "users.id:");
+    request.session.user_id = user.id;
 
     return "ok"
   });

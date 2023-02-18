@@ -8,6 +8,7 @@
     },
     "target": "es2020",
     "paths": {
+      "@gateways/*": ["./src/gateways/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@routes/*": ["./src/routes/*"],
       "@middlewares/*": ["./src/middlewares/*"]

@@ -1,17 +1,20 @@
 {
   "extends": "fastify-tsconfig",
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "outDir": "dist",
     "sourceMap": true,
+    "esModuleInterop": true,
     "paths": {
-      "@gateways/*": ["./src/gateways/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@middlewares/*": ["./src/middlewares/*"]
+      "@gateways/*": ["./gateways/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@routes/*": ["./routes/*"],
+      "@middlewares/*": ["./middlewares/*"]
     }
   },
+  "include": ["src/**/*.ts"],
   "ts-node": {
-    "swc": true
+    "swc": true,
+    "require": ["tsconfig-paths/register"]
   }
 }

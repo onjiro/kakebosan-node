@@ -12,7 +12,7 @@
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
     "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",
-    "dev:start": "fastify start --ignore-watch=.ts$ -w -p 3002 -l info -P dist/app.js"
+    "dev:start": "TS_NODE_BASEURL=./dist node ../../node_modules/fastify-cli/cli.js start -r tsconfig-paths/register --ignore-watch=.ts$  -w -p 3002 -l info --pretty-logs dist/app.js"
   },
   "keywords": [],
   "author": "",
@@ -29,12 +29,13 @@
     "fastify-cli": "^5.7.0",
     "fastify-plugin": "^4.0.0",
     "fastify-prisma-client": "^5.0.0",
-    "underscore": "^1.13.6"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.35",
     "@swc/helpers": "^0.4.14",
+    "@types/lodash": "^4.14.191",
     "@types/node": "^18.0.0",
     "@types/tap": "^15.0.5",
     "concurrently": "^7.0.0",
@@ -42,6 +43,7 @@
     "prisma": "^4.8.0",
     "regenerator-runtime": "^0.13.11",
     "tap": "^16.1.0",
+    "tsconfig-paths": "^4.1.2",
     "typescript": "^4.5.4"
   },
   "prisma": {

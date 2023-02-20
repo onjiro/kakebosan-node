@@ -1,6 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
-// @ts-ignore
-import pick from "underscore/modules/pick.js";
+import pick from "lodash/pick";
 import * as users from "@gateways/users";
 import * as github from "@gateways/github";
 
@@ -27,7 +26,7 @@ const githubCallback: FastifyPluginAsync = async (fastify, opts): Promise<void> 
     fastify.log.info(user, "users.id:");
     request.session.user_id = user.id;
 
-    return "ok"
+    return await reply.redirect("http://localhost:3000/home");
   });
 }
 

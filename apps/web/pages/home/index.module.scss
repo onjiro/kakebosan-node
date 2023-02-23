@@ -1,0 +1,38 @@
+.title {
+  font-size: 1.5rem;
+  padding: 2px 4px;
+}
+
+.transactionList {
+  list-style: none;
+  padding: 0;
+}
+
+.transaction {
+  display: grid;
+  align-items: baseline;
+  grid-template:
+    "date    date   date" auto
+    "debit credit amount" auto / 1fr auto auto;
+}
+.transaction > * {
+  padding: 2px 4px;
+}
+
+.date {
+  grid-area: date;
+  font-size: xx-small;
+}
+
+.debitItemNames {
+  grid-area: debit;
+}
+
+.creditItemNames {
+  grid-area: credit;
+  font-size: xx-small;
+}
+
+.amount {
+  grid-area: amount;
+}

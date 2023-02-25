@@ -1,3 +1,36 @@
+.contentWrapper {
+  display: flex;
+}
+
+.content {
+  flex: 1 1 auto;
+}
+
+.rightDrawer {
+  flex-basis: 400px;
+  width: 0; /* chrome向けに必要 */
+  height: 100dvh;
+  transition: flex-basis 180ms ease-in-out;
+  border-left: 1px solid #e0e0e0;
+}
+
+.rightDrawerHeader {
+  display: grid;
+  grid-template-columns: auto min-content;
+  align-items: center;
+  padding: 16px 8px;
+  background-color: #e0e0e0;
+  margin-bottom: 16px;
+}
+
+.rightDrawerContent {
+  padding: 0 8px;
+}
+
+.rightDrawerTitle {
+  margin: 0;
+}
+
 .title {
   font-size: 1.5rem;
   padding: 2px 4px;

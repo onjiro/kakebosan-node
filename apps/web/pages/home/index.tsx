@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { format } from "date-fns";
 import styles from "./index.module.scss";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 const getAccountingItems = async () => {
   const res = await fetch("http://localhost:3002/accounting/transactions", {
@@ -34,25 +35,86 @@ const Home = () => {
   }
 
   return (
-    <div>
-      <h1 className={styles.title}>一覧</h1>
-      <ul className={styles.transactionList}>
-        {data &&
-          data.map((trx: any) => (
-            <li className={styles.transaction}>
-              <span className={styles.date}>{dateFormat(trx.date)}</span>
-              <span className={styles.debitItemNames}>
-                {entrisNamesFormat(debitEntries(trx.entries))}
-              </span>
-              <span className={styles.creditItemNames}>
-                {entrisNamesFormat(creditEntries(trx.entries))}
-              </span>
-              <span className={styles.amount}>
-                {currencyFormat(totalAmount(debitEntries(trx.entries)))}
-              </span>
-            </li>
-          ))}
-      </ul>
+    <div className={styles.contentWrapper}>
+      <section className={styles.content}>
+        <h1 className={styles.title}>一覧</h1>
+        <ul className={styles.transactionList}>
+          {data &&
+            data.map((trx: any) => (
+              <li key={trx.id} className={styles.transaction}>
+                <span className={styles.date}>{dateFormat(trx.date)}</span>
+                <span className={styles.debitItemNames}>
+                  {entrisNamesFormat(debitEntries(trx.entries))}
+                </span>
+                <span className={styles.creditItemNames}>
+                  {entrisNamesFormat(creditEntries(trx.entries))}
+                </span>
+                <span className={styles.amount}>
+                  {currencyFormat(totalAmount(debitEntries(trx.entries)))}
+                </span>
+              </li>
+            ))}
+        </ul>
+      </section>
+      <section className={styles.rightDrawer}>
+        <header className={styles.rightDrawerHeader}>
+          <h2 className={styles.rightDrawerTitle}>入力</h2>
+          <Button variant="outline-secondary">x</Button>
+        </header>
+        <section className={styles.rightDrawerContent}>
+          <Form>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="3">
+                金額
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control type="number" placeholder="0" />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="3">
+                支出科目
+              </Form.Label>
+              <Col sm="9">
+                <Form.Select>
+                  <option>-</option>
+                </Form.Select>
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="3">
+                日付
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control type="date" />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="3">
+                内容
+              </Form.Label>
+              <Col sm="9">
+                <Form.Control type="text" placeholder="内容を入力" />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="3">
+                支出元
+              </Form.Label>
+              <Col sm="9">
+                <Form.Select>
+                  <option>-</option>
+                </Form.Select>
+              </Col>
+            </Form.Group>
+            <div className="d-grid gap-2">
+              <Button variant="primary" size="lg">
+                追加
+              </Button>
+            </div>
+          </Form>
+        </section>
+      </section>
     </div>
   );
 };

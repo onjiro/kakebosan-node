@@ -1,9 +1,9 @@
-import useSWR from "swr";
 import { format } from "date-fns";
 import styles from "./index.module.scss";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { trpc } from "../../utils/trpc";
 
-const getAccountingItems = async () => {
+const getAccountingTransactions = async () => {
   const res = await fetch("http://localhost:3002/accounting/transactions", {
     mode: "cors",
     credentials: "include",
@@ -29,9 +29,14 @@ const currencyFormat = (amount: number) => {
 };
 
 const Home = () => {
-  const { data, error } = useSWR("/accounting/items", getAccountingItems);
+  const { data, error } = trpc.accounting.transactions.useQuery();
   if (error) {
     console.error(error);
+  }
+
+  const { data: items, error: itemError } = trpc.accounting.items.useQuery();
+  if (itemError) {
+    console.error(itemError);
   }
 
   return (
@@ -40,7 +45,7 @@ const Home = () => {
         <h1 className={styles.title}>一覧</h1>
         <ul className={styles.transactionList}>
           {data &&
-            data.map((trx: any) => (
+            data.map((trx) => (
               <li key={trx.id} className={styles.transaction}>
                 <span className={styles.date}>{dateFormat(trx.date)}</span>
                 <span className={styles.debitItemNames}>

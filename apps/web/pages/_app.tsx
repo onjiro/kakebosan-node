@@ -1,6 +1,9 @@
-import type { AppProps } from "next/app";
+import type { AppProps, AppType } from "next/app";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { trpc } from "../utils/trpc";
 
-export default function KakebosanApp({ Component, pageProps }: AppProps) {
+const KakebosanApp: AppType = ({ Component, pageProps }: AppProps) => {
   return <Component {...pageProps} />;
-}
+};
+
+export default trpc.withTRPC(KakebosanApp);
